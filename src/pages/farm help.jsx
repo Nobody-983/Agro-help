@@ -1,134 +1,223 @@
 import { useState } from "react";
-import { Sprout, Users, MapPin, Clock, PlusCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import {
+  Sprout,
+  Users,
+  MapPin,
+  Clock,
+  Phone,
+  MessageCircle,
+  MessageSquare,
+} from "lucide-react";
 
 export default function FarmHelpHub() {
   const [activeTab, setActiveTab] = useState("jobs");
+  const { t } = useTranslation();
 
-  const [jobInput, setJobInput] = useState("");
+  const phone = "2348140182558";
 
-  const [farmJobs, setFarmJobs] = useState([
+  const farmJobs = [
     {
-      title: "Cassava Planting Crew Needed",
-      location: "Ilorin North",
+      title: t("cassava_job"),
+      location: t("ilorin_north"),
       workers: 10,
       pay: "₦5,000/day",
-      time: "Starts in 2 days",
+      time: t("starts_2_days"),
     },
     {
-      title: "Maize Harvest Assistance",
-      location: "Ogbomosho Road",
+      title: t("maize_job"),
+      location: t("ogbomosho_road"),
       workers: 6,
       pay: "₦6,500/day",
-      time: "Next week",
+      time: t("next_week"),
     },
-  ]);
+  ];
 
   const workers = [
     {
       name: "Adewale Farm Team",
-      skill: "General Farm Labour",
+      skill: t("general_labour"),
       experience: "3 years",
-      availability: "Available now",
+      availability: t("available_now"),
     },
     {
       name: "Bola Agro Helpers",
-      skill: "Harvesting Specialist",
+      skill: t("harvest_specialist"),
       experience: "5 years",
-      availability: "Weekend only",
+      availability: t("weekend_only"),
     },
   ];
 
-  const handlePostJob = () => {
-    if (!jobInput.trim()) return;
-
-    const newJob = {
-      title: jobInput,
-      location: "Pending location",
-      workers: 0,
-      pay: "Not set",
-      time: "Just posted",
-    };
-
-    setFarmJobs([newJob, ...farmJobs]);
-    setJobInput("");
-  };
-
   return (
     <div className="min-h-screen bg-green-50 p-6">
+
       {/* Header */}
+
       <div className="text-center mb-8">
         <div className="flex justify-center items-center gap-2">
           <Sprout className="text-green-600" />
-          <h1 className="text-3xl font-bold text-green-800">Farm Help Hub</h1>
+          <h1 className="text-3xl font-bold text-green-800">
+            {t("farm_help_title")}
+          </h1>
         </div>
+
         <p className="text-gray-600 mt-2">
-          Connect farmers with reliable farm workers instantly
+          {t("farm_help_desc")}
         </p>
       </div>
 
-     
       {/* Tabs */}
+
       <div className="flex gap-4 mb-6 justify-center">
+
         <button
           onClick={() => setActiveTab("jobs")}
-          className={`px-4 hover:bg-green-600 py-2 rounded-full ${
+          className={`px-4 py-2 rounded-full ${
             activeTab === "jobs"
               ? "bg-green-600 text-white"
               : "bg-white text-green-700"
           }`}
         >
-          Farm Jobs
+          {t("farm_jobs")}
         </button>
 
         <button
           onClick={() => setActiveTab("workers")}
-          className={`px-4 hover:bg-green-600 py-2 rounded-full ${
+          className={`px-4 py-2 rounded-full ${
             activeTab === "workers"
               ? "bg-green-600 text-white"
               : "bg-white text-green-700"
           }`}
         >
-          Workers
+          {t("workers")}
         </button>
+
       </div>
 
-      {/* Content */}
+      {/* Jobs */}
+
       {activeTab === "jobs" && (
         <div className="grid gap-4 md:grid-cols-2">
+
           {farmJobs.map((job, i) => (
-            <div key={i} className="bg-white p-4 rounded-xl shadow">
+            <div
+              key={i}
+              className="bg-white p-4 rounded-xl shadow"
+            >
               <h3 className="font-bold text-lg text-green-800">
                 {job.title}
               </h3>
+
               <p className="flex items-center gap-2 text-gray-600">
-                <MapPin size={14} /> {job.location}
+                <MapPin size={14} />
+                {job.location}
               </p>
+
               <p className="flex items-center gap-2 text-gray-600">
-                <Users size={14} /> {job.workers} workers needed
+                <Users size={14} />
+                {job.workers} {t("workers_needed")}
               </p>
-              <p className="text-green-700 font-semibold">{job.pay}</p>
-              <p className="flex items-center gap-2 text-gray-500 text-sm">
-                <Clock size={14} /> {job.time}
+
+              <p className="text-green-700 font-semibold">
+                {job.pay}
               </p>
+
+              <p className="flex items-center gap-2 text-gray-500">
+                <Clock size={14} />
+                {job.time}
+              </p>
+
+              <div className="flex gap-2 mt-4">
+
+                <a
+                  href={`https://wa.me/${phone}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-green-500 text-white px-3 py-2 rounded-lg flex items-center gap-1"
+                >
+                  <MessageCircle size={16}/>
+                  {t("whatsapp")}
+                </a>
+
+                <a
+                  href={`tel:${phone}`}
+                  className="bg-blue-500 text-white px-3 py-2 rounded-lg flex items-center gap-1"
+                >
+                  <Phone size={16}/>
+                  {t("call")}
+                </a>
+
+                <a
+                  href={`sms:${phone}`}
+                  className="bg-orange-500 text-white px-3 py-2 rounded-lg flex items-center gap-1"
+                >
+                  <MessageSquare size={16}/>
+                  {t("message")}
+                </a>
+
+              </div>
             </div>
           ))}
+
         </div>
       )}
 
+      {/* Workers */}
+
       {activeTab === "workers" && (
         <div className="grid gap-4 md:grid-cols-2">
+
           {workers.map((worker, i) => (
-            <div key={i} className="bg-white p-4 rounded-xl shadow">
+            <div
+              key={i}
+              className="bg-white p-4 rounded-xl shadow"
+            >
               <h3 className="font-bold text-lg text-green-800">
                 {worker.name}
               </h3>
-              <p className="text-gray-600">Skill: {worker.skill}</p>
-              <p className="text-gray-600">Experience: {worker.experience}</p>
+
+              <p>
+                {t("skill")}: {worker.skill}
+              </p>
+
+              <p>
+                {t("experience")}: {worker.experience}
+              </p>
+
               <p className="text-green-700 font-semibold">
                 {worker.availability}
               </p>
+
+              <div className="flex gap-2 mt-4">
+
+                <a
+                  href={`https://wa.me/${phone}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-green-500 text-white px-3 py-2 rounded-lg"
+                >
+                  {t("whatsapp")}
+                </a>
+
+                <a
+                  href={`tel:${phone}`}
+                  className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+                >
+                  {t("call")}
+                </a>
+
+                <a
+                  href={`sms:${phone}`}
+                  className="bg-orange-500 text-white px-3 py-2 rounded-lg"
+                >
+                  {t("message")}
+                </a>
+
+              </div>
+
             </div>
           ))}
+
         </div>
       )}
     </div>

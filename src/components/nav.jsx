@@ -8,47 +8,38 @@ export default function Nav({
   linkStyle,
   changeLanguage,
 }) {
+  const links = [
+    { to: "/", label: t("home") },
+    { to: "/ai", label: t("ai_advisor") },
+    { to: "/calculator", label: t("calculator") },
+    { to: "/hire", label: t("hire") },
+    { to: "/tips", label: t("weekly_tips") },
+  ];
+
   return (
     <>
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b px-4 md:px-6 lg:px-10 py-3 md:py-4">
-
         <div className="flex justify-between items-center">
 
           {/* LOGO */}
           <NavLink
             to="/"
-            className="text-lg md:text-xl lg:text-2xl font-extrabold text-green-600"
+            className="text-lg md:text-xl font-extrabold text-green-600"
           >
             SolarSDG
           </NavLink>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 font-medium">
+          <div className="hidden md:flex items-center gap-6 font-medium">
 
-            <NavLink to="/" className={linkStyle}>
-              {t("home")}
-            </NavLink>
+            {links.map((link, i) => (
+              <NavLink key={i} to={link.to} className={linkStyle}>
+                {link.label}
+              </NavLink>
+            ))}
 
-            
-            <NavLink to="/AI" className={linkStyle}>
-              {t("AI smart answer")}
-            </NavLink>
-
-
-            <NavLink to="/calculator" className={linkStyle}>
-              {t("calculator")}
-            </NavLink>
-            
-          <NavLink to="/hire" className={linkStyle}>
-              {t("Hire")}
-            </NavLink>
-          
-             <NavLink to="/tips" className={linkStyle}>
-              {t("Weekly tips")}
-            </NavLink>
-
-            {/* LANGUAGE SWITCHER (DESKTOP) */}
+            {/* LANGUAGE SWITCHER */}
             <select
               onChange={(e) => changeLanguage(e.target.value)}
               value={i18n.language}
@@ -80,15 +71,14 @@ export default function Nav({
         />
       )}
 
-      {/* MOBILE SLIDE MENU */}
+      {/* MOBILE MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 sm:w-72 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
+        className={`fixed top-0 right-0 h-full w-72 bg-white shadow-xl z-50 transform transition-transform duration-300
         ${open ? "translate-x-0" : "translate-x-full"}`}
       >
-
         <div className="p-5 flex flex-col gap-6">
 
-          {/* CLOSE BUTTON */}
+          {/* CLOSE */}
           <button
             onClick={() => setOpen(false)}
             className="text-2xl self-end"
@@ -97,60 +87,22 @@ export default function Nav({
           </button>
 
           {/* LINKS */}
-          <NavLink
-            to="/"
-            onClick={() => setOpen(false)}
-            className={linkStyle}
-          >
-            {t("home")}
-          </NavLink>
+          {links.map((link, i) => (
+            <NavLink
+              key={i}
+              to={link.to}
+              onClick={() => setOpen(false)}
+              className={linkStyle}
+            >
+              {link.label}
+            </NavLink>
+          ))}
 
-          <NavLink
-            to="/calculator"
-            onClick={() => setOpen(false)}
-            className={linkStyle}
-          >
-            {t("calculator")}
-
-            
-          </NavLink>
-
-          
-          <NavLink
-            to="/hire"
-            onClick={() => setOpen(false)}
-            className={linkStyle}
-          >
-            {t("hire")}
-
-            
-          </NavLink>
-
-          
-          <NavLink
-            to="/AI"
-            onClick={() => setOpen(false)}
-            className={linkStyle}
-          >
-            {t("AI answer")}
-
-            
-          </NavLink>
-
-          <NavLink
-            to="/tips"
-            onClick={() => setOpen(false)}
-            className={linkStyle}
-          >
-            {t("Farm TIPS")}
-
-            
-          </NavLink>
-
-          
-          {/* LANGUAGE SWITCHER (MOBILE) */}
+          {/* LANGUAGE */}
           <div className="pt-4 border-t">
-            <p className="text-xs text-gray-500 mb-2">Language</p>
+            <p className="text-xs text-gray-500 mb-2">
+              {t("language")}
+            </p>
 
             <select
               onChange={(e) => {
